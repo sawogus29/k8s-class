@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mypod-1
+  labels:
+    app: myapp
+  namespace: hhs
+spec:
+  containers:
+  - name: hhs
+    image: nginx
+  nodeSelector:
+    disktype: hdd
+

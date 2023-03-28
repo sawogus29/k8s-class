@@ -1,0 +1,14 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: mypod
+  labels:
+    app: myapp
+  namespace: hhs
+spec:
+  containers:
+  - name: hhs
+    image: nginx
+  - name: myapp-container
+    image: busybox
+    command: ['sh', '-c', 'echo hello k8s!!!  && sleep 3600']

@@ -1,0 +1,12 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: mypod
+  labels:
+    app: myapp
+spec:
+  imagePullSecrets:
+  - name: myregistry
+  containers:
+  - name: hhs
+    image: sawogus29/test:html

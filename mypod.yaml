@@ -1,0 +1,127 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    cni.projectcalico.org/containerID: 8d75e03f57010eca0dd698e38ac820cc7758586b9b333c41f72f9c0a828c1166
+    cni.projectcalico.org/podIP: 172.20.235.134/32
+    cni.projectcalico.org/podIPs: 172.20.235.134/32
+  creationTimestamp: "2023-03-21T10:21:01Z"
+  labels:
+    app: myapp
+  name: mypod
+  namespace: hhs
+  resourceVersion: "30157"
+  uid: 377cf83c-4b05-4c52-a314-b5f2195e755a
+spec:
+  containers:
+  - image: nginx
+    imagePullPolicy: Always
+    name: hhs
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-6hc9k
+      readOnly: true
+  - command:
+    - sh
+    - -c
+    - echo hello k8s!!!  && sleep 3600
+    image: busybox
+    imagePullPolicy: Always
+    name: myapp-container
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-6hc9k
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  nodeName: worker1
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - name: kube-api-access-6hc9k
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2023-03-21T10:21:07Z"
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2023-03-21T10:21:18Z"
+    status: "True"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2023-03-21T10:21:18Z"
+    status: "True"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2023-03-21T10:21:01Z"
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - containerID: containerd://3149e30ed39f3284338292ed0205af1a87c299846bed48fe41aff9b117b62221
+    image: docker.io/library/nginx:latest
+    imageID: docker.io/library/nginx@sha256:aa0afebbb3cfa473099a62c4b32e9b3fb73ed23f2a75a65ce1d4b4f55a5c2ef2
+    lastState: {}
+    name: hhs
+    ready: true
+    restartCount: 0
+    started: true
+    state:
+      running:
+        startedAt: "2023-03-21T10:21:11Z"
+  - containerID: containerd://5ec778b773180802029b58d2652813e82176abcf46a0d48de6fee2187325ed3f
+    image: docker.io/library/busybox:latest
+    imageID: docker.io/library/busybox@sha256:b5d6fe0712636ceb7430189de28819e195e8966372edfc2d9409d79402a0dc16
+    lastState: {}
+    name: myapp-container
+    ready: true
+    restartCount: 0
+    started: true
+    state:
+      running:
+        startedAt: "2023-03-21T10:21:17Z"
+  hostIP: 192.168.76.131
+  phase: Running
+  podIP: 172.20.235.134
+  podIPs:
+  - ip: 172.20.235.134
+  qosClass: BestEffort
+  startTime: "2023-03-21T10:21:07Z"

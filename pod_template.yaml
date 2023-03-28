@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mypod-1
+  namespace: hhs
+spec:
+  containers:
+  - image: nginx
+    imagePullPolicy: Always
+    name: hhs
